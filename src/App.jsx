@@ -1,36 +1,73 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import * as React from "react";
+import PropTypes from "prop-types";
 
-function App() {
-  const [count, setCount] = useState(0);
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
+import AppAppBar from "./components/AppBar";
+import Hero from "./components/Hero";
+import LogoCollection from "./components/LogoCollection";
+import Highlights from "./components/Highlights";
+import Pricing from "./components/Pricing";
+import Features from "./components/Features";
+import Testimonials from "./components/Testimonials";
+import FAQ from "./components/FAQ";
+import Footer from "./components/Footer";
+import getLPTheme from "./configurations/getLPTheme";
+
+import "@rainbow-me/rainbowkit/styles.css";
+
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
+import { mainnet, sepolia } from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+const config = getDefaultConfig({
+  appName: "SFA Market App",
+  projectId: "SFAMARKET",
+  chains: [mainnet, sepolia],
+  ssr: false, // If your dApp uses server side rendering (SSR)
+});
+
+export default function App() {
+  const [mode, setMode] = React.useState("light");
+  const LPtheme = createTheme(getLPTheme(mode));
+
+  const toggleColorMode = () => {
+    setMode((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider modalSize="compact">
+          <ThemeProvider theme={LPtheme}>
+            <CssBaseline />
+            <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+            <Hero />
+            <Box sx={{ bgcolor: "background.default" }}>
+              <LogoCollection />
+              <Features />
+              <Divider />
+              <Testimonials />
+              <Divider />
+              <Highlights />
+              <Divider />
+              <Pricing />
+              <Divider />
+              <FAQ />
+              <Divider />
+              <Footer />
+            </Box>
+          </ThemeProvider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
-
-export default App;

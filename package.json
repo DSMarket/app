@@ -10,10 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
+    "@mui/system": "^5.15.15",
+    "@mui/utils": "^5.15.14",
     "@rainbow-me/rainbowkit": "^2.1.2",
+    "@tanstack/react-query": "^5.40.0",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "viem": "2.x",
+    "wagmi": "^2.9.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
